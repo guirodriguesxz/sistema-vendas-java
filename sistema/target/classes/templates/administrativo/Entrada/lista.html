@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Vendas - Histórico de Entradas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .btn-action { transition: transform 0.2s; }
+        .btn-action:hover { transform: scale(1.2); }
+        .table thead th { background-color: #212529; color: white; border: none; }
+    </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" th:href="@{/administrativo}">
+            <img src="https://img.icons8.com/parakeet-line/1200/total-sales-1.jpg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            Sistema de Vendas
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold text-dark mb-0">
+                <i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i>Histórico de Entradas
+            </h4>
+            <a th:href="@{/cadastroEntrada}" class="btn btn-primary shadow-sm">
+                <i class="fas fa-plus me-1"></i> Nova Entrada
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Data / Hora</th>
+                    <th>Fornecedor</th>
+                    <th>Responsável</th>
+                    <th class="text-center">Qtd. Total</th>
+                    <th>Valor Total</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ent : ${listaEntradas}">
+                    <td th:text="${ent.id}" class="fw-bold"></td>
+                    <td th:text="${#dates.format(ent.dataEntrada, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${ent.fornecedor != null ? ent.fornecedor.nome : 'N/A'}"></td>
+                    <td th:text="${ent.funcionario != null ? ent.funcionario.nome : 'N/A'}"></td>
+                    <td th:text="${ent.quantidadeTotal}" class="text-center"></td>
+                    <td th:text="${#numbers.formatCurrency(ent.valorTotal)}" class="fw-bold text-success"></td>
+                    <td class="text-center">
+                        <a th:href="@{/editarEntrada/{id}(id=${ent.id})}" class="text-primary me-3 btn-action d-inline-block" title="Editar Entrada">
+                            <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                        </a>
+                        <a th:href="@{/removerEntrada/{id}(id=${ent.id})}" class="text-danger btn-action d-inline-block" title="Excluir Entrada"
+                           onclick="return confirm('Atenção: Ao excluir esta entrada, o estoque dos produtos será estornado. Confirmar?')">
+                            <i class="fa-solid fa-trash fa-lg"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(listaEntradas)}">
+                    <td colspan="7" class="text-center text-muted py-4">Nenhuma entrada registrada até o momento.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4 pt-3 border-top">
+            <a th:href="@{/administrativo}" class="btn btn-outline-dark">
+                <i class="fas fa-arrow-left me-1"></i> Voltar ao Menu
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Vendas - Lista de Funcionários</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <style>
+        .dataTables_filter { margin-bottom: 20px; }
+        .page-item.active .page-link { background-color: #212529; border-color: #212529; color: white; }
+        .page-link { color: #212529; }
+    </style>
+</head>
+<body class="bg-white">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" th:href="@{/administrativo}">
+            <img src="https://img.icons8.com/parakeet-line/1200/total-sales-1.jpg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            Sistema de Vendas
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/administrativo}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/listaFuncionario}">Lista de Funcionários</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid mt-5 px-4">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 p-4">
+                <h4 class="mb-4 fw-bold text-dark">Funcionários Cadastrados</h4>
+
+                <table id="tabelaFuncionarios" class="table table-hover align-middle">
+                    <thead>
+                    <tr class="text-secondary border-bottom">
+                        <th scope="col" class="pb-3">ID</th>
+                        <th scope="col" class="pb-3">Nome</th>
+                        <th scope="col" class="pb-3">CPF</th>
+                        <th scope="col" class="pb-3">Cargo</th>
+                        <th scope="col" class="pb-3">Cidade</th>
+                        <th scope="col" class="pb-3">Email</th>
+                        <th scope="col" class="pb-3 text-center">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="func : ${listaFuncionarios}" class="border-bottom">
+                        <td th:text="${func.id}" class="fw-bold">ID</td>
+                        <td th:text="${func.nome}">Nome</td>
+                        <td th:text="${func.cpf}">000.000.000-00</td>
+                        <td th:text="${func.funcao}">Cargo</td>
+                        <td th:text="${func.cidade != null ? func.cidade.nome : 'N/A'}">Cidade</td>
+                        <td th:text="${func.email}">email@teste.com</td>
+                        <td class="text-center">
+                            <a th:href="@{/editarFuncionario/{id}(id=${func.id})}" class="text-primary me-3 text-decoration-none">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <a th:href="@{/removerFuncionario/{id}(id=${func.id})}" class="text-danger text-decoration-none"
+                               onclick="return confirm('Deseja realmente remover este Funcionário?')">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="mt-4 pt-3 border-top">
+                    <a th:href="@{/administrativo}" class="btn btn-danger px-4 shadow-sm">
+                        <i class="fas fa-arrow-left me-1"></i> Voltar
+                    </a>
+                    <a th:href="@{/cadastroFuncionario}" class="btn btn-primary px-4 shadow-sm ms-2">
+                        <i class="fas fa-plus me-1"></i> Cadastrar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#tabelaFuncionarios').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+            },
+            "pageLength": 10
+        });
+    });
+</script>
+
+</body>
+</html>

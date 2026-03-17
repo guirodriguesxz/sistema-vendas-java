@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Vendas - Cadastro de Produto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-white">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10"> <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">Cadastro de Produto</h4>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/salvarProduto}" th:object="${produto}" method="POST">
+
+                    <div class="row">
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">ID</label>
+                            <input type="text" th:field="*{id}" class="form-control bg-light" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Nome do Produto</label>
+                            <input type="text" th:field="*{nome}" class="form-control" placeholder="Ex: Arroz Tipo 1" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Código de Barras</label>
+                            <input type="text" th:field="*{codigoBarras}" class="form-control" placeholder="789...">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Unidade de Medida</label>
+                            <select th:field="*{unidadeMedida}" class="form-select">
+                                <option value="UN">Unidade (UN)</option>
+                                <option value="KG">Quilo (KG)</option>
+                                <option value="LT">Litro (LT)</option>
+                                <option value="CX">Caixa (CX)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Qtd. em Estoque</label>
+                            <input type="number" step="0.01" th:field="*{estoque}" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row border-top pt-3 mt-3">
+                        <h5 class="text-secondary mb-3">Valores e Lucro</h5>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Preço de Custo</label>
+                            <input type="number" step="0.01" th:field="*{precoCusto}" id="custo" class="form-control" required oninput="calcular()">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Preço de Venda</label>
+                            <input type="number" step="0.01" th:field="*{precoVenda}" id="venda" class="form-control" required oninput="calcular()">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Lucro (R$)</label>
+                            <input type="number" step="0.01" th:field="*{lucro}" id="lucro" class="form-control bg-light" readonly>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Margem (%)</label>
+                            <input type="number" step="0.01" th:field="*{margemLucro}" id="margem" class="form-control bg-light" readonly>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 border-top pt-3">
+                        <button type="submit" class="btn btn-primary px-4">Salvar Produto</button>
+                        <a th:href="@{/listaProduto}" class="btn btn-secondary px-4 ms-2">Voltar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Cálculo automático para facilitar seu teste
+    function calcular() {
+        const custo = parseFloat(document.getElementById('custo').value) || 0;
+        const venda = parseFloat(document.getElementById('venda').value) || 0;
+        const lucro = venda - custo;
+
+        document.getElementById('lucro').value = lucro.toFixed(2);
+
+        if (custo > 0) {
+            const margem = (lucro / custo) * 100;
+            document.getElementById('margem').value = margem.toFixed(2);
+        } else {
+            document.getElementById('margem').value = 0;
+        }
+    }
+</script>
+
+</body>
+</html>
