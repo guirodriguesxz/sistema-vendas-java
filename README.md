@@ -1,4 +1,5 @@
-📑 Descrição do Projeto: Sistema de Vendas & Gestão de Estoque
+Sistema de Vendas & Gestão de Estoque
+
 Este é um sistema Full Stack desenvolvido para gerenciar operações comerciais de pequeno e médio porte. O projeto foca no controle rigoroso de inventário, permitindo que a empresa gerencie desde o cadastro básico de parceiros até a movimentação financeira de entradas e saídas (vendas).
 
 🚀 Principais Funcionalidades
